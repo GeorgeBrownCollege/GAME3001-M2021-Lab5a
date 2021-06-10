@@ -48,12 +48,21 @@ private:
 	bool m_getGridEnabled() const;
 	void m_computeTileCosts();
 
+	// TODO
+	// void m_findShortestPath();
+	// void m_displayPathList();
+
 	// convenience functions
 	Tile* m_getTile(int col, int row);
 	Tile* m_getTile(glm::vec2 grid_position);
 
 	// heuristic state
 	Heuristic m_currentHeuristic;
+
+	// data structures for pathfinding
+	std::vector<Tile*> m_pOpenList;
+	std::vector<Tile*> m_pClosedList;
+	std::vector<Tile*> m_pPathList;
 	
 
 };

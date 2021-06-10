@@ -66,12 +66,14 @@ void PlayScene::start()
 	m_pTarget = new Target();
 	m_pTarget->getTransform()->position = m_getTile(15, 11)->getTransform()->position + offset; // position in world space matches grid space
 	m_pTarget->setGridPosition(15, 11);
+	m_getTile(15, 11)->setTileStatus(GOAL);
 	addChild(m_pTarget);
 
 	// Add StarShip to Scene
 	m_pStarShip = new StarShip();
 	m_pStarShip->getTransform()->position = m_getTile(1, 3)->getTransform()->position + offset; // position in world space matches grid space
 	m_pStarShip->setGridPosition(1, 3);
+	m_getTile(1, 3)->setTileStatus(START);
 	addChild(m_pStarShip);
 
 	m_computeTileCosts();
@@ -120,8 +122,12 @@ void PlayScene::GUI_Function()
 			start_position[1] = Config::ROW_NUM - 1;
 		}
 
+		// unmark the Start Status from current Grid position
+		m_getTile(m_pStarShip->getGridPosition())->setTileStatus(UNVISITED);
 		m_pStarShip->getTransform()->position = m_getTile(start_position[0], start_position[1])->getTransform()->position + offset;
 		m_pStarShip->setGridPosition(start_position[0], start_position[1]);
+		// mark the Start Status for the new Grid position
+		m_getTile(m_pStarShip->getGridPosition())->setTileStatus(START);
 	}
 
 	ImGui::Separator();
@@ -134,8 +140,10 @@ void PlayScene::GUI_Function()
 			goal_position[1] = Config::ROW_NUM - 1;
 		}
 
+		m_getTile(m_pTarget->getGridPosition())->setTileStatus(UNVISITED);
 		m_pTarget->getTransform()->position = m_getTile(goal_position[0], goal_position[1])->getTransform()->position + offset;
 		m_pTarget->setGridPosition(goal_position[0], goal_position[1]);
+		m_getTile(m_pTarget->getGridPosition())->setTileStatus(GOAL);
 		m_computeTileCosts();
 	}
 
