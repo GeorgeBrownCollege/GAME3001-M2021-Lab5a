@@ -151,6 +151,59 @@ void PlayScene::m_buildGrid()
 			m_pGrid.push_back(tile);
 		}
 	}
+
+	// create references (connections) for each tile (node) to its neighbours
+	for (int row = 0; row < Config::ROW_NUM; ++row)
+	{
+		for (int col = 0; col < Config::COL_NUM; ++col)
+		{
+			Tile* tile = m_getTile(col, row);
+
+			// Topmost row
+			if(row == 0)
+			{
+				tile->setNeighbourTile(TOP_TILE, nullptr);
+			}
+			else
+			{
+				// setup Top Neighbour Tile
+				tile->setNeighbourTile(TOP_TILE, m_getTile(col, row - 1));
+			}
+
+			// rightmost col
+			if(col == Config::COL_NUM - 1)
+			{
+				tile->setNeighbourTile(RIGHT_TILE, nullptr);
+			}
+			else
+			{
+				// setup the Right Neighbour Tile
+				tile->setNeighbourTile(RIGHT_TILE, m_getTile(col + 1, row));
+			}
+
+			// bottom-most row
+			if(row == Config::ROW_NUM - 1)
+			{
+				tile->setNeighbourTile(BOTTOM_TILE, nullptr);
+			}
+			else
+			{
+				// setup the Bottom Neighbour Tile
+				tile->setNeighbourTile(BOTTOM_TILE, m_getTile(col, row + 1));
+			}
+
+			// leftmost column
+			if (col == 0)
+			{
+				tile->setNeighbourTile(LEFT_TILE, nullptr);
+			}
+			else
+			{
+				// setup the Left Neighbour Tile
+				tile->setNeighbourTile(LEFT_TILE, m_getTile(col -1, row));
+			}
+		}
+	}
 }
 
 void PlayScene::m_setGridEnabled(const bool state)
